@@ -13,3 +13,4 @@ service_data/*
 !service_data/.gitkeep
 
 .DS_Store
+.tar.gz
