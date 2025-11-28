@@ -19,25 +19,35 @@ docker load -i <文件名.tar>
 docker save -o ai-diagnosis-service.v1.0.0.tar ai-diagnosis-service:v1.0.0
 docker save -o parse-data-service.v1.0.0.tar parse-data-service:v1.0.0
 
-docker load -i ai-diagnosis-service.v1.0.0.tar 
+docker load -i ai-diagnosis-service.v1.0.0.tar
 docker load -i parse-data-service.v1.0.0.tar
 
 
-# 启动ai辅助诊断服务(需要先cd到ai-diagnosis-service-data同级目录)
+# 启动ai辅助诊断服务
+cd ~/projects/chifeng-ai-diagnosis
+
 docker run -itd \
 -e GRADIO_SERVER_NAME=0.0.0.0 \
 -e GRADIO_SERVER_PORT=7860 \
--v ./service-data/ktem_app_data:/app/ktem_app_data \
--v ./service-data/logs:/app/logs \
--v ./service-conf/ai-diagnosis/models:/app/models \
+-v ./service_data/ktem_app_data:/app/ktem_app_data \
+-v ./service_data/logs:/app/logs \
+-v ./service_conf/ai_diagnosis/models:/app/models \
+-v ./service_conf/ai_diagnosis/conf:/app/conf \
 -p 7860:7860  \
 --name ai-diagnosis-service \
 ai-diagnosis-service:v1.0.0
 
-# 启动数据处理服务 (需要先cd到ai-diagnosis-service-data同级目录)
+# 启动数据处理服务
+cd ~/projects/chifeng-ai-diagnosis
+
 docker run -d -p 8501:8501 \
-  -v ./service-data/parse-data/conf:/app/conf \
+  -v ./service_conf/parse_data/conf:/app/conf \
   --name parse-data-service \
   parse-data-service:v1.0.0
 
 # 服务监控软件
+
+
+# 编写定时任务，做数据备份，且只保留最近180天的数据备份
+
+# 

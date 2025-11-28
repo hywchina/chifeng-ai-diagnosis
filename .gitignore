@@ -1,0 +1,15 @@
+# 忽略
+images/*
+!images/.gitkeep
+
+macos_m_softwares/*
+!macos_m_softwares/.gitkeep
+
+# 模型文件 (通常很大)
+service_conf/ai_diagnosis/models/*
+!service_conf/ai_diagnosis/models/.gitkeep
+
+service_data/*
+!service_data/.gitkeep
+
+.DS_Store
