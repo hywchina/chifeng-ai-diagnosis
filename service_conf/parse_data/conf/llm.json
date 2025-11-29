@@ -1,5 +1,5 @@
 {
- "default": "gpt-oss-120b",
+ "default": "gpt-oss-20b",
   "infini": {
     "api_key": "sk-7xet3afg2b7fumjl",
     "base_url": "https://cloud.infini-ai.com/maas/v1",
