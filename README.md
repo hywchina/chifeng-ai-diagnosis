@@ -30,7 +30,7 @@ docker run -itd \
   -e GRADIO_SERVER_NAME=0.0.0.0 \
   -e GRADIO_SERVER_PORT=7860 \
   -v ./service_data/ktem_app_data:/app/ktem_app_data \
-  -v ./service_data/logs:/app/logs \
+  -v ./service_data/ai_diagnosis_logs:/app/logs \
   -v ./service_conf/ai_diagnosis/models:/app/models \
   -v ./service_conf/ai_diagnosis/conf:/app/conf \
   -p 7860:7860  \
@@ -43,6 +43,7 @@ cd ~/projects/chifeng-ai-diagnosis
 
 docker run -d -p 8501:8501 \
   -v ./service_conf/parse_data/conf:/app/conf \
+  -v ./service_data/parse_data_logs:/app/logs \
   --add-host=host.docker.internal:host-gateway \
   --name parse-data-service \
   parse-data-service:v1.0.0
