@@ -67,26 +67,23 @@ lms status	检查LM Studio运行状态	日常诊断、问题排查
 lms server start	启动本地API服务器	开发集成、自动化脚本
 lms server stop	停止本地API服务器	资源释放、环境清理
 lms log stream	实时查看应用日志	调试模型加载、API调用
+lms ls # 列出已下载模型（人类可读格式）
+lms ls --json # 列出已下载模型（JSON格式，适合脚本处理）
+lms load <模型路径> -y # 加载模型（最大GPU加速）
+lms ps # 查看运行中模型
+lms unload <模型标识符> # 卸载指定模型
+lms unload --all # 卸载所有模型
 
-# 列出已下载模型（人类可读格式）
-lms ls
-
-# 列出已下载模型（JSON格式，适合脚本处理）
-lms ls --json
-
-# 加载模型（最大GPU加速）
-lms load <模型路径> -y
-
-# 查看运行中模型
-lms ps
-
-# 卸载指定模型
-lms unload <模型标识符>
-
-# 卸载所有模型
-lms unload --all
-
-# 加载模型 案例
 lms load openai/gpt-oss-120b --context-length 60000 --identifier openai/gpt-oss-120b # 最大 131K
 lms load openai/gpt-oss-20 --context-length 120000 --identifier openai/gpt-oss-20b # 最大 131K
 lms load lm-kit/bge-m3-gguf/bge-m3-Q8_0.gguf --context-length 8192 --identifier text-embedding-bge-m3 # 8192 or 4096 
+
+# 本项目 模型分布
+
+1. ai_diagnosis 
+  1. llm 模型 通过 kotaemon/flowsettings.py 配置
+  2. embedding 模型 通过 kotaemon/flowsettings.py 配置
+  3. rerank 模型 通过 ai_diagnosis/conf/rerank_models.json 配置；权重 chifeng-ai-diagnosis/service_conf/ai_diagnosis/models
+
+2. parse_data
+  1. llm 模型 chifeng-ai-diagnosis/service_conf/parse_data/conf/llm.json
