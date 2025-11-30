@@ -74,9 +74,22 @@ lms ps # 查看运行中模型
 lms unload <模型标识符> # 卸载指定模型
 lms unload --all # 卸载所有模型
 
-lms load openai/gpt-oss-120b --context-length 60000 --identifier openai/gpt-oss-120b # 最大 131K
+
+lms ls
+# 仅显示LLM模型
+lms ls --llm
+# 仅显示嵌入模型
+lms ls --embedding
+# 显示模型变体
+
+
+
+lms load openai/gpt-oss-120b --context-length 120000--identifier openai/gpt-oss-120b # 最大 131K
 lms load openai/gpt-oss-20 --context-length 120000 --identifier openai/gpt-oss-20b # 最大 131K
 lms load lm-kit/bge-m3-gguf/bge-m3-Q8_0.gguf --context-length 8192 --identifier text-embedding-bge-m3 # 8192 or 4096 
+lms load qwen/qwen3-235b-a22b-2507 --context-length 120000 --identifier qwen/qwen3-235b-a22b-2507
+
+lms load mlx-community/deepseek-r1-distill-llama-70b --context-length 120000 --identifier mlx-community/deepseek-r1-distill-llama-70b 
 
 # 本项目 模型分布
 
