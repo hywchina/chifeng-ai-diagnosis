@@ -100,3 +100,37 @@ lms load mlx-community/deepseek-r1-distill-llama-70b --context-length 120000 --i
 
 2. parse_data
   1. llm 模型 chifeng-ai-diagnosis/service_conf/parse_data/conf/llm.json
+
+  ## 模型性能基准测试 (LM Studio)
+
+  运行本地 LM Studio API 后，可执行性能测试脚本：
+
+  ```bash
+  python utils/benchmark_lmstudio.py \
+    --host http://localhost:1234 \
+    --questions 100 \
+    --max-tokens 512 \
+    --out-prefix utils/lmstudio_benchmark
+  ```
+
+  主要指标：
+
+  - time_to_first_token: 首个 token 输出耗时 (s)
+  - completion_time: 从首 token 到结束的生成耗时 (s)
+  - completion_tokens / total_tokens: 使用接口返回或近似估算
+  - tokens_per_second: completion_tokens / completion_time
+  - finish_reason: EOS 表示正常遇到结束符
+
+  生成结果：`utils/lmstudio_benchmark.csv` 与 `utils/lmstudio_benchmark.json`
+
+  更多参数：
+
+  ```bash
+  python utils/benchmark_lmstudio.py --help
+  ```
+
+python utils/benchmark_lmstudio.py \
+  --questions 10 \
+  --max-tokens 4096 \
+  --models "baichuan-m2-32b-mlx" "openai/gpt-oss-20b" "openai/gpt-oss-120b" "qwen/qwen3-30b-a3b-2507" "qwen/qwen3-235b-a22b-2507" \
+  --out-prefix utils/lmstudio_benchmark
