@@ -134,7 +134,7 @@ KH_LLMS["lmstudio-gpt-oss-20b"] = {  # LM Studio语言模型配置
         "model": "openai/gpt-oss-20b",
         "api_key": "lmstudio",
     },
-    "default": False,
+    "default": True,
 }
 
 

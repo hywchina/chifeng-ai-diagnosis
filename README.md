@@ -8,10 +8,7 @@ bash set_env.sh
 # 构建镜像
 # 新的 单独 dockerfile
 rm -rf ktem_app_data logs venv # 删除旧数据
-docker build -t ai-diagnosis-service:v1.0.0 -f Dockerfile.ai-diagnosis.v1.0.0 .
-
-
-# 加载镜像
+docker build -t ai-diagnosis-service:v1.0.0 -f Dockerfile.ai_diagnosis.v1.0.0 .
 docker commit <容器ID或容器名> <新镜像名>:<tag>
 docker save -o <保存路径/文件名.tar> <镜像名>:<tag>
 docker load -i <文件名.tar>
