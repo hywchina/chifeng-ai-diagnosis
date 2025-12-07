@@ -30,7 +30,6 @@ docker run -itd \
   -v ./service_data/ai_diagnosis_logs:/app/logs \
   -v ./service_conf/ai_diagnosis/models:/app/models \
   -v ./service_conf/ai_diagnosis/conf:/app/conf \
-  -v ./service_conf/ai_diagnosis/flowsettings.py:/app/flowsettings.py \
   -p 7860:7860  \
   --add-host=host.docker.internal:host-gateway \
   --name ai-diagnosis-service \
