@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" 
+"http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+    <key>Label</key>
+    <string>com.ai.backup</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/ai_diagnosis/projects/chifeng-ai-diagnosis/utils/backup_service_data.sh</string>
+    </array>
+
+    <!-- 每天 3:00 运行 -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>3</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/ai_diagnosis/projects/chifeng-ai-diagnosis/service_data/backup_logs/out.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/ai_diagnosis/projects/chifeng-ai-diagnosis/service_data/backup_logs/error.log</string>
+
+</dict>
+</plist>

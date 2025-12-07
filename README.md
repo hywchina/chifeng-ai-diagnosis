@@ -52,12 +52,23 @@ docker run -d -p 8501:8501 \
 # 编写定时任务，做数据备份，且只保留最近180天的数据备份
 
 chmod +x ~/scripts/load_models.sh
-crontab -e
 
-0 * * * * /bin/bash /Users/ai_diagnosis/projects/chifeng-ai-diagnosis/utils/load_models.sh
+launchctl unload ~/Library/LaunchAgents/com.ai.backup.plist
+
+# 加载任务（启动任务）
+launchctl load -w ~/Library/LaunchAgents/com.ai.backup.plist
+
+# 启动任务
+launchctl start com.ai.backup
+
+# 验证任务是否在运行
+launchctl list | grep com.ai.backup
+
+# 停止/卸载任务
+
+launchctl unload ~/Library/LaunchAgents/com.ai.backup.plist
 
 
-crontab -l
 
 # lms 加载模型 
 命令	功能描述	适用场景

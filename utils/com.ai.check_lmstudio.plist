@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+"http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+
+    <!-- 任意唯一名称 -->
+    <key>Label</key>
+    <string>com.ai.check_lmstudio</string>
+
+    <!-- 执行的脚本 -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/ai_diagnosis/projects/chifeng-ai-diagnosis/utils/check_lmstudio.sh</string>
+    </array>
+
+    <!-- 每 15 分钟执行一次 -->
+    <key>StartInterval</key>
+    <integer>900</integer>
+
+    <!-- 日志输出路径 -->
+    <key>StandardOutPath</key>
+    <string>/Users/ai_diagnosis/projects/chifeng-ai-diagnosis/service_data/check_lmstudio_logs/out.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/ai_diagnosis/projects/chifeng-ai-diagnosis/service_data/check_lmstudio_logs/error.log</string>
+
+</dict>
+</plist>
