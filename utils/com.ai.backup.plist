@@ -19,9 +19,14 @@
     <key>RunAtLoad</key>
     <true/>
 
-    <!-- 每 3 分钟运行一次 -->
-    <key>StartInterval</key>
-    <integer>180</integer>
+    <!-- 每天 3:00 运行一次 -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>3</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
 
     <key>StandardOutPath</key>
     <string>/Users/ai_diagnosis/projects/chifeng-ai-diagnosis/service_data/backup_logs/out.log</string>

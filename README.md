@@ -1,4 +1,5 @@
 # macos 相关账号
+电脑登陆账号：ai_diagnosis 111111
 apple 账号：ai_diagnosis@126.com ChiFeng@123
 126邮箱账号：ai_diagnosis@126.com ChiFeng@123
 
@@ -173,3 +174,6 @@ python utils/benchmark_lmstudio.py \
   --max-tokens 4096 \
   --models "baichuan-m2-32b-mlx" "openai/gpt-oss-20b" "openai/gpt-oss-120b" "qwen/qwen3-30b-a3b-2507" "qwen/qwen3-235b-a22b-2507" \
   --out-prefix utils/lmstudio_benchmark
+
+  ## 备份解压：
+  tar -xzf backup_2025-12-21_08-11-35.tar.gz -C /path/to/target_dir

@@ -4,11 +4,11 @@
 export PATH="/Users/ai_diagnosis/.lmstudio/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
 
 # 诊断输出：记录 PATH 与 lms 位置，帮助定位环境问题
-echo "ENV PATH=$PATH"
+echo "当前 PATH=$PATH"
 if command -v lms >/dev/null 2>&1; then
-    echo "Found lms: $(command -v lms)"
+    echo "已找到 lms: $(command -v lms)"
 else
-    echo "LM Studio CLI (lms) not found in PATH"
+    echo "PATH 中未找到 LM Studio CLI (lms)"
 fi
 MODEL_1_ID="openai/gpt-oss-20b"
 MODEL_1_IDENTIFIER="openai/gpt-oss-20b"
@@ -20,9 +20,9 @@ MODEL_2_CONTEXT=8192
 
 # 1. 启动服务（如果没运行）
 if ! lms status >/dev/null 2>&1; then
-    echo "Starting LM Studio server..."
+    echo "启动 LM Studio 服务..."
     lms server start >/dev/null 2>&1
-    echo "Waiting for server to initialize..."
+    echo "等待服务初始化..."
     sleep 10    # ← ★ 关键：等待服务完全就绪
 fi
 
@@ -48,21 +48,21 @@ ensure_model() {
     current_ctx=$(get_loaded_context "$ident")
 
     if [ -n "$current_ctx" ] && [ "$current_ctx" != "$desired_ctx" ]; then
-        echo "Context mismatch for $ident (current=$current_ctx, desired=$desired_ctx), reloading..."
+        echo "模型 $ident 的上下文不一致 (当前=$current_ctx, 期望=$desired_ctx)，重新加载..."
         lms unload "$ident" >/dev/null 2>&1 || true
         action_taken="yes"
         current_ctx=""
     fi
 
     if [ -z "$current_ctx" ]; then
-        echo "Loading model $ident (id=$model_id, ctx=$desired_ctx)..."
+        echo "加载模型 $ident (id=$model_id, ctx=$desired_ctx)..."
         lms load "$model_id" \
             --context-length "$desired_ctx" \
             --identifier "$ident" \
             -y
         action_taken="yes"
     else
-        echo "Model $ident already loaded with context $current_ctx"
+        echo "模型 $ident 已加载，context=$current_ctx"
     fi
 
     # 若有变更，刷新 LOADED_MODELS，供后续模型判断使用
