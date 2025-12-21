@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# 为 launchctl 环境补全 PATH，确保能找到 lms 可执行文件
+export PATH="/Users/ai_diagnosis/.lmstudio/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin"
+
+# 诊断输出：记录 PATH 与 lms 位置，帮助定位环境问题
+echo "ENV PATH=$PATH"
+if command -v lms >/dev/null 2>&1; then
+    echo "Found lms: $(command -v lms)"
+else
+    echo "LM Studio CLI (lms) not found in PATH"
+fi
 MODEL_1_ID="openai/gpt-oss-20b"
 MODEL_1_IDENTIFIER="openai/gpt-oss-20b"
 MODEL_1_CONTEXT=64000
@@ -18,21 +28,48 @@ fi
 
 # 2. 获取已加载模型
 LOADED_MODELS=$(lms ps 2>/dev/null)
+# 3. 校验并加载模型，若 context 与期望不符则卸载后按设定重新加载
+get_loaded_context() {
+    # 从 lms ps 的表格输出中提取指定 identifier 的 context 列（倒序寻找数字）
+    local ident="$1"
+    echo "$LOADED_MODELS" | awk -v id="$ident" '
+        NR >= 3 && $1 == id {
+            for (i = NF; i >= 1; i--) {
+                if ($i ~ /^[0-9]+$/) { print $i; break }
+            }
+        }
+    '
+}
 
-# 3. 加载模型 1
-if ! echo "$LOADED_MODELS" | grep -q "$MODEL_1_IDENTIFIER"; then
-    echo "Loading model $MODEL_1_IDENTIFIER..."
-    lms load "$MODEL_1_ID" \
-        --context-length "$MODEL_1_CONTEXT" \
-        --identifier "$MODEL_1_IDENTIFIER" \
-        -y
-fi
+ensure_model() {
+    local model_id="$1" ident="$2" desired_ctx="$3"
+    local current_ctx action_taken=""
 
-# 4. 加载模型 2
-if ! echo "$LOADED_MODELS" | grep -q "$MODEL_2_IDENTIFIER"; then
-    echo "Loading model $MODEL_2_IDENTIFIER..."
-    lms load "$MODEL_2_ID" \
-        --context-length "$MODEL_2_CONTEXT" \
-        --identifier "$MODEL_2_IDENTIFIER" \
-        -y
-fi
+    current_ctx=$(get_loaded_context "$ident")
+
+    if [ -n "$current_ctx" ] && [ "$current_ctx" != "$desired_ctx" ]; then
+        echo "Context mismatch for $ident (current=$current_ctx, desired=$desired_ctx), reloading..."
+        lms unload "$ident" >/dev/null 2>&1 || true
+        action_taken="yes"
+        current_ctx=""
+    fi
+
+    if [ -z "$current_ctx" ]; then
+        echo "Loading model $ident (id=$model_id, ctx=$desired_ctx)..."
+        lms load "$model_id" \
+            --context-length "$desired_ctx" \
+            --identifier "$ident" \
+            -y
+        action_taken="yes"
+    else
+        echo "Model $ident already loaded with context $current_ctx"
+    fi
+
+    # 若有变更，刷新 LOADED_MODELS，供后续模型判断使用
+    if [ -n "$action_taken" ]; then
+        LOADED_MODELS=$(lms ps 2>/dev/null)
+    fi
+}
+
+ensure_model "$MODEL_1_ID" "$MODEL_1_IDENTIFIER" "$MODEL_1_CONTEXT"
+ensure_model "$MODEL_2_ID" "$MODEL_2_IDENTIFIER" "$MODEL_2_CONTEXT"

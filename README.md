@@ -57,17 +57,47 @@ launchctl unload ~/Library/LaunchAgents/com.ai.backup.plist
 
 # 加载任务（启动任务）
 launchctl load -w ~/Library/LaunchAgents/com.ai.backup.plist
+launchctl load -w ~/Library/LaunchAgents/com.ai.check_lmstudio.plist
 
 # 启动任务
 launchctl start com.ai.backup
+launchctl start com.ai.check_lmstudio
 
 # 验证任务是否在运行
 launchctl list | grep com.ai.backup
+launchctl list | grep com.ai.check_lmstudio
 
 # 停止/卸载任务
 
 launchctl unload ~/Library/LaunchAgents/com.ai.backup.plist
+launchctl unload ~/Library/LaunchAgents/com.ai.check_lmstudio.plist
 
+#### 定时任务生效 com.ai.check_lmstudio
+launchctl unload ~/Library/LaunchAgents/com.ai.check_lmstudio.plist
+cp ~/projects/chifeng-ai-diagnosis/utils/com.ai.check_lmstudio.plist ~/Library/LaunchAgents/
+launchctl load -w ~/Library/LaunchAgents/com.ai.check_lmstudio.plist
+launchctl start com.ai.check_lmstudio
+
+#### 定时任务生效 com.ai.backup.plist
+launchctl list | grep com.ai.backup
+launchctl unload ~/Library/LaunchAgents/com.ai.backup.plist
+cp ~/projects/chifeng-ai-diagnosis/utils/com.ai.backup.plist ~/Library/LaunchAgents/
+launchctl load -w ~/Library/LaunchAgents/com.ai.backup.plist
+launchctl start com.ai.backup
+
+uid="$(id -u)"
+
+# 卸载旧实例（用户域）
+launchctl bootout gui/$uid ~/Library/LaunchAgents/com.ai.backup.plist
+
+# 覆盖到 LaunchAgents（如未复制或需要更新）
+cp ~/projects/chifeng-ai-diagnosis/utils/com.ai.backup.plist ~/Library/LaunchAgents/
+
+# 重新加载并持久化
+launchctl bootstrap gui/$uid ~/Library/LaunchAgents/com.ai.backup.plist
+
+# 立即触发一轮以验证效果
+launchctl kickstart -k gui/$uid/com.ai.backup
 
 
 # lms 加载模型 
